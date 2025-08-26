@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panda Special Matrix</title>
+    <style>
+        :root {
+            --bg-gradient-start: #1a1a2e;
+            --bg-gradient-end: #16213e;
+            --container-bg: rgba(45, 55, 72, 0.9);
+            --header-gradient-start: #2d3748;
+            --header-gradient-end: #4a5568;
+            --border-color: #4a5568;
+            --text-primary: #e0e6ed;
+            --text-secondary: #a0aec0;
+            --text-muted: #718096;
+            --accent-primary: #4299e1;
+            --accent-primary-hover: #3182ce;
+            --accent-secondary: #2d3748;
+            --accent-secondary-hover: #374151;
+            --status-online: #23f734;
+            --console-text: #00ff00;
+            --console-bg: #1a202c;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .header {
+            background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 1.8rem; font-weight: 600; }
+        .hamburger {
+            background: none;
+            border: 2px solid var(--text-muted);
+            color: var(--text-muted);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        .hamburger:hover { border-color: var(--text-secondary); color: var(--text-secondary); }
+        .section { padding: 20px; border-bottom: 1px solid var(--border-color); }
+        .section:last-child { border-bottom: none; }
+        .status-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .title { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 15px; }
+        .status-badge {
+            background: var(--status-online);
+            color: #1a202c;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .status-message { color: var(--text-muted); font-size: 0.95rem; }
+        .btn-group { display: flex; gap: 10px; }
+        .btn {
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn.primary { background: var(--accent-primary); border: 2px solid var(--accent-primary); }
+        .btn.primary:hover { background: var(--accent-primary-hover); }
+        .btn.secondary { background: var(--accent-secondary); border: 2px solid var(--border-color); color: var(--text-secondary); }
+        .btn.secondary:hover { border-color: var(--text-muted); background: var(--accent-secondary-hover); }
+        .btn.inactive { background: var(--accent-secondary); color: var(--text-secondary); pointer-events: none; opacity: 0.6; }
+        .control-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 15px; }
+        .control-grid .btn { padding: 15px 10px; }
+        .feature-header, .toggle-section { display: flex; justify-content: space-between; align-items: center; }
+        .feature-header > div, .toggle-section > div:first-child { margin-right: 15px; }
+        .feature-title { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 4px; }
+        .feature-subtitle, .toggle-info, .hotkey-text { color: var(--text-muted); font-size: 0.9rem; }
+        .console-section { background: rgba(26, 32, 44, 0.5); }
+        .console-area {
+            background: var(--console-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            height: 120px;
+            color: var(--console-text);
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .console-area p { margin: 0; line-height: 1.5; }
+        @media (max-width: 768px) {
+            .control-grid { grid-template-columns: repeat(2, 1fr); }
+            .btn-group { flex-wrap: wrap; }
+            .container { margin: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐼 Panda Special Matrix</h1>
+            <button class="hamburger" id="help-btn">☰</button>
+        </div>
+        <div class="section">
+            <div class="status-header">
+                <div class="title" style="margin-bottom: 0;">Status</div>
+                <div class="status-badge">Online</div>
+            </div>
+            <div class="status-message">Panda Matrix Client Connected Successfully</div>
+        </div>
+        <div class="section">
+            <div class="title">Headshot Mode</div>
+            <div class="btn-group" data-toggle-group="headshot-version">
+                <button class="btn primary" data-value="V1">V1</button>
+                <button class="btn secondary" data-value="V2">V2</button>
+                <button class="btn secondary" data-value="V3">V3</button>
+            </div>
+        </div>
+        <div class="section">
+             <div class="control-grid" data-toggle-group="main-control">
+                <button class="btn primary" data-value="Headshot">Headshot</button>
+                <button class="btn secondary" data-value="Sniper">Sniper</button>
+                <button class="btn secondary" data-value="Extra">Extra</button>
+                <button class="btn secondary" data-value="Settings">Settings</button>
+             </div>
+             <div class="control-grid" data-toggle-group="esp-control">
+                <button class="btn secondary" data-value="External Esp">External ESP</button>
+                <button class="btn primary" data-value="Normal Esp">Normal ESP</button>
+            </div>
+        </div>
+        <div class="section">
+            <div class="feature-header">
+                <div>
+                    <div class="feature-title">Scan Enemies</div>
+                    <div class="feature-subtitle" id="scan-status">Status: Idle</div>
+                </div>
+                <button class="btn primary" id="scan-btn">Scan</button>
+            </div>
+        </div>
+        <div class="section">
+            <div class="toggle-section">
+                <div>
+                    <div class="feature-title">Continuous Scan</div>
+                    <div class="toggle-info">Automatically scan for targets.</div>
+                </div>
+                <div class="btn-group" data-toggle-group="continuous-scan">
+                    <button class="btn secondary" data-value="Enabled">Enable</button>
+                    <button class="btn primary" data-value="Disabled">Disable</button>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="toggle-section">
+                <div>
+                    <div class="feature-title">Aim Position</div>
+                    <div class="hotkey-text">Hotkey - Not Set</div>
+                </div>
+                <div class="btn-group" data-toggle-group="aim-position">
+                    <button class="btn secondary" data-value="Neck">Neck</button>
+                    <button class="btn primary" data-value="Default">Default Aim</button>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+             <div class="toggle-section">
+                <div>
+                    <div class="feature-title">Headshot Legit Mode</div>
+                    <div class="toggle-info">Adds slight randomization to aim.</div>
+                </div>
+                <div class="btn-group" data-toggle-group="legit-mode">
+                    <button class="btn secondary" data-value="Enabled">Enable</button>
+                    <button class="btn primary" data-value="Disabled">Disable</button>
+                </div>
+            </div>
+        </div>
+        <div class="console-section">
+            <div class="title">Console</div>
+            <div class="console-area" id="console-output">
+                <p>> Panda Special Matrix initialized...</p>
+                <p>> Client connected successfully. Ready for input.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize a counter for clicks
+            let clickCount = 0;
+
+            const allButtons = document.querySelectorAll('button');
+            const alertMessages = [
+                "Poi Fair ah aadura vazhiya paaru da punda 🤡",
+                "Padichu Munnera vazhiya Paara Punda 🤡",
+                "Nee oru Comali Pundai🤡"
+            ];
+
+            allButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.stopImmediatePropagation();
+                    
+                    // Increment the counter on every click
+                    clickCount++;
+
+                    // For the first two clicks, show a random alert
+                    if (clickCount <= 2) {
+                        const randomIndex = Math.floor(Math.random() * alertMessages.length);
+                        alert(alertMessages[randomIndex]);
+                    } else {
+                        // On the third click, create and display a new page
+                        const newPageContent = `
+                            <!DOCTYPE html>
+                            <html lang="en">
+                            <head>
+                                <meta charset="UTF-8">
+                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                <title>Arivurai</title>
+                                <style>
+                                    body {
+                                        background-color: #1a1a2e;
+                                        color: #e0e6ed;
+                                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: center;
+                                        align-items: center;
+                                        text-align: center;
+                                        height: 100vh;
+                                        margin: 0;
+                                        padding: 20px;
+                                        box-sizing: border-box;
+                                    }
+                                    h1 {
+                                        font-size: clamp(1.5rem, 5vw, 2.5rem);
+                                        max-width: 800px;
+                                        line-height: 1.5;
+                                    }
+                                    img {
+                                        margin-top: 30px;
+                                        max-width: 100%;
+                                        width: 480px;
+                                        height: auto;
+                                        border-radius: 12px;
+                                        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                                    }
+                                </style>
+                            </head>
+                            <body>
+                                <h1>Inime ippadi Panel Panel nu Pallu pundai ya kaatitu vara koodathu seriya 🦍</h1>
+                                <img src="https://i.ytimg.com/vi/9CzqdeZIvt8/hqdefault.jpg" alt="Vadivelu">
+                            </body>
+                            </html>
+                        `;
+                        // Overwrite the current page with the new content
+                        document.open();
+                        document.write(newPageContent);
+                        document.close();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
