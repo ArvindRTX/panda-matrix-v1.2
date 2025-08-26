@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panda Special Matrix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #e0e6ed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(45, 55, 72, 0.9);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            color: #e0e6ed;
+            font-weight: 600;
+        }
+
+        .hamburger {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: none;
+            border: 2px solid #718096;
+            color: #718096;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .status-section {
+            padding: 20px;
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .status-title {
+            font-size: 1.2rem;
+            color: #a0aec0;
+        }
+
+        .status-badge {
+            background: #23f734;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-message {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .mode-section {
+            padding: 20px;
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .mode-title {
+            font-size: 1.2rem;
+            color: #a0aec0;
+            margin-bottom: 15px;
+        }
+
+        .version-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .version-btn {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .version-btn:hover {
+            background: #3182ce;
+            transform: translateY(-1px);
+        }
+
+        .version-btn.inactive {
+            background: #4a5568;
+            color: #a0aec0;
+        }
+
+        .main-controls {
+            padding: 20px;
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .control-btn {
+            background: #2d3748;
+            color: #a0aec0;
+            border: 2px solid #4a5568;
+            padding: 15px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .control-btn:hover {
+            border-color: #718096;
+            background: #374151;
+            transform: translateY(-1px);
+        }
+
+        .control-btn.active {
+            border-color: #a0aec0;
+            color: #e0e6ed;
+        }
+
+        .feature-section {
+            padding: 20px;
+            border-bottom: 1px solid #4a5568;
+        }
+
+        .feature-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            color: #a0aec0;
+        }
+
+        .feature-subtitle {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .action-btn {
+            background: #4299e1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: #3182ce;
+            transform: translateY(-1px);
+        }
+
+        .action-btn.secondary {
+            background: #2d3748;
+            border: 2px solid #4a5568;
+            color: #a0aec0;
+        }
+
+        .action-btn.secondary:hover {
+            border-color: #718096;
+            background: #374151;
+        }
+
+        .toggle-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .toggle-info {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .console-section {
+            padding: 20px;
+            background: rgba(26, 32, 44, 0.5);
+        }
+
+        .console-title {
+            font-size: 1.1rem;
+            color: #a0aec0;
+            margin-bottom: 15px;
+        }
+
+        .console-area {
+            background: #1a202c;
+            border: 1px solid #4a5568;
+            border-radius: 6px;
+            padding: 15px;
+            height: 100px;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .hotkey-text {
+            color: #718096;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .control-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .version-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .container {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🐼 Panda Special Matrix</h1>
+            <button class="hamburger" onclick="showAlert()">☰</button>
+        </div>
+
+        <!-- Status Section -->
+        <div class="status-section">
+            <div class="status-header">
+                <div class="status-title">Status</div>
+                <div class="status-badge">Online</div>
+            </div>
+            <div class="status-message">Panda Matrix Client Connected Sucessfully</div>
+        </div>
+
+        <!-- Headshot Mode Section -->
+        <div class="mode-section">
+            <div class="mode-title">Headshot Mode</div>
+            <div class="version-buttons">
+                <button class="version-btn" onclick="showAlert()">V1</button>
+                <button class="version-btn inactive" onclick="showAlert()">V2</button>
+                <button class="version-btn inactive" onclick="showAlert()">V3</button>
+            </div>
+        </div>
+
+        <!-- Main Controls -->
+        <div class="main-controls">
+            <div class="control-grid">
+                <button class="control-btn active" onclick="showAlert()">Headshot</button>
+                <button class="control-btn" onclick="showAlert()">Sniper</button>
+                <button class="control-btn" onclick="showAlert()">Extra</button>
+                <button class="control-btn" onclick="showAlert()">Settings</button>
+            </div>
+            <div class="control-grid">
+                <button class="control-btn" onclick="showAlert()">External Esp</button>
+                <button class="control-btn" onclick="showAlert()">Normal Esp</button>
+            </div>
+        </div>
+
+        <!-- Scan Enemies Section -->
+        <div class="feature-section">
+            <div class="feature-header">
+                <div>
+                    <div class="feature-title">Scan Enemies</div>
+                    <div class="feature-subtitle">Scan : None</div>
+                </div>
+                <button class="action-btn" onclick="showAlert()">Scan</button>
+            </div>
+        </div>
+
+        <!-- Continuous Scan Section -->
+        <div class="feature-section">
+            <div class="toggle-section">
+                <div>
+                    <div class="feature-title">Continuous Scan</div>
+                    <div class="toggle-info">On : None &nbsp;&nbsp; Off : None</div>
+                </div>
+                <div class="toggle-buttons">
+                    <button class="action-btn" onclick="showAlert()">Enable</button>
+                    <button class="action-btn secondary" onclick="showAlert()">Disable</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Aim Position Section -->
+        <div class="feature-section">
+            <div class="toggle-section">
+                <div>
+                    <div class="feature-title">Aim Position</div>
+                    <div class="hotkey-text">Hotkey - Help</div>
+                </div>
+                <div class="toggle-buttons">
+                    <button class="action-btn" onclick="showAlert()">Neck</button>
+                    <button class="action-btn secondary" onclick="showAlert()">Default Aim</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Aim Position Section -->
+        <div class="feature-section">
+            <div class="toggle-section">
+                <div>
+                    <div class="feature-title">Other Aim Position</div>
+                    <div class="hotkey-text">Hotkey - Help</div>
+                </div>
+                <div class="toggle-buttons">
+                    <button class="action-btn secondary" onclick="showAlert()">Select</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Headshot Legit Section -->
+        <div class="feature-section">
+            <div class="toggle-section">
+                <div>
+                    <div class="feature-title">Headshot Legit</div>
+                    <div class="toggle-info">On : None &nbsp;&nbsp; Off : None</div>
+                </div>
+                <div class="toggle-buttons">
+                    <button class="action-btn" onclick="showAlert()">Enable</button>
+                    <button class="action-btn secondary" onclick="showAlert()">Disable</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Console Section -->
+        <div class="console-section">
+            <div class="console-title">Console</div>
+            <div class="console-area" onclick="showAlert()">
+                > Panda Special Matrix initialized...
+                > Waiting for commands...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showAlert() {
+            alert("Sootha mooditu Fair ah play panra punda");
+        }
+
+        // Add click events to all interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make console area clickable too
+            const console = document.querySelector('.console-area');
+            console.style.cursor = 'pointer';
+            
+            // Add some dynamic effects
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('mousedown', function() {
+                    this.style.transform = 'translateY(2px)';
+                });
+                
+                button.addEventListener('mouseup', function() {
+                    this.style.transform = 'translateY(-1px)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
